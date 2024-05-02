@@ -1,0 +1,7 @@
+BasedOnStyle: LLVM
+ColumnLimit: 80
+MaxEmptyLinesToKeep: 1
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+BreakBeforeBraces: Allman
