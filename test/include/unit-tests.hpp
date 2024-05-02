@@ -1,6 +1,13 @@
+/**
+ * @brief Unit tests framework
+ * @author Allan Almeida
+ * @date 2024-05-01
+ */
+
 #ifndef MY_TEST_FRAMEWORK_UNIT_TESTS_HPP
 #define MY_TEST_FRAMEWORK_UNIT_TESTS_HPP
 
+#include <cstdio>
 #include <functional>
 #include <iostream>
 #include <map>
@@ -118,6 +125,12 @@ void RUN_ALL_TESTS()
         std::cout << ANSI_COLOR_RED << "Some tests failed!" << ANSI_COLOR_RESET
                   << std::endl;
     }
+}
+
+void REMOVE_TEST_FILES()
+{
+    std::remove("button_pressed.txt");
+    std::remove("digital_write.txt");
 }
 
 #endif // MY_TEST_FRAMEWORK_UNIT_TESTS_HPP

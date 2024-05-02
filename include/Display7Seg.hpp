@@ -9,34 +9,33 @@
 #ifndef DISPLAY_HPP
 #define DISPLAY_HPP
 
-#include "Types.hpp"
-
-// Define a function type for digitalWrite
-typedef void (*DigitalWriteFunction)(uint8_t, uint8_t);
+#include "interface/IDisplay.hpp"
 
 /**
- * @brief Display class
+ * @brief 7-Segment Display class
  */
-class Display
+class Display7Seg final : public IDisplay
 {
   public:
-    Display(uint8_t data_pin, uint8_t shift_clk_pin, uint8_t latch_clk_pin,
-            uint8_t en_disp1_pin, void (*digital_write_func)(uint8_t, uint8_t));
-    ~Display();
+    Display7Seg(uint8_t data_pin, uint8_t shift_clk_pin, uint8_t latch_clk_pin,
+                uint8_t en_disp1_pin,
+                void (*digital_write_func)(uint8_t, uint8_t));
+    ~Display7Seg();
 
     /**
      * @brief Display a number
      *
      * @param number Numer to be displayed
      */
-    void displayNumber(int16_t number);
+    void displayNumber(int16_t number) override;
 
   private:
-    uint8_t m_data_pin;                        // Data pin
-    uint8_t m_shitf_clk_pin;                   // Shift clock pin
-    uint8_t m_latch_clk_pin;                   // Latch clock pin
-    uint8_t m_en_disp1_pin;                    // Enable Display 1 pin
-    DigitalWriteFunction m_digital_write_func; // Digital digitalWrite function
+    uint8_t m_data_pin;      // Data pin
+    uint8_t m_shitf_clk_pin; // Shift clock pin
+    uint8_t m_latch_clk_pin; // Latch clock pin
+    uint8_t m_en_disp1_pin;  // Enable Display 1 pin
+    void (*m_digital_write_func)(uint8_t,
+                                 uint8_t); // Digital digitalWrite function
 };
 
 /**

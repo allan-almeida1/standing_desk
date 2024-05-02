@@ -1,6 +1,7 @@
-#include "../include/Display.hpp"
+#include "../include/Display7Seg.hpp"
+#include "Types.hpp"
+#include "include/mocks.hpp"
 #include "include/unit-tests.hpp"
-#include <vector>
 
 TEST_CASE(splitDigits)
 {
@@ -41,20 +42,13 @@ TEST_CASE(convertToBits)
     ASSERT_EQUAL(bits, 0b0000000000000101);
 }
 
-void mockDigitalWrite(uint8_t pin, uint8_t value)
-{
-    std::cout << "Pin: " << (int)pin << " Value: " << (int)value << std::endl;
-}
-
 TEST_CASE(displayNumber)
 {
-    uint8_t data_pin = 1;
-    uint8_t shift_clk_pin = 2;
-    uint8_t latch_clk_pin = 3;
-    uint8_t en_disp1_pin = 4;
-
-    Display display(data_pin, shift_clk_pin, latch_clk_pin, en_disp1_pin,
-                    &mockDigitalWrite);
-
-    display.displayNumber(395);
+    Display7Seg display(1, 2, 3, 4, &mockDigitalWrite);
+    display.displayNumber(78);
+    std::string result = readFromFile("digital_write.txt");
+    ASSERT_EQUAL(result,
+                 "4,0,1,0,2,1,2,0,1,0,2,1,2,0,1,0,2,1,2,0,1,1,2,1,2,0,"
+                 "1,1,2,1,2,0,1,1,2,1,2,0,1,1,2,1,2,0,1,0,2,1,2,0,1,0,"
+                 "2,1,2,0,1,0,2,1,2,0,1,0,2,1,2,0,1,0,2,1,2,0,3,1,3,0,");
 }
