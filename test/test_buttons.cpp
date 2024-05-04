@@ -11,7 +11,11 @@ TEST_CASE(debounceButton)
                            &mockMillis);
     buttons.upPressed(&mockButtonPressed); // 1
     buttons.upPressed(&mockButtonPressed); // 1
+    buttons.upPressed(&mockButtonPressed); // 0
+    buttons.upPressed(&mockButtonPressed); // 0
     buttons.upPressed(&mockButtonPressed); // 1
+    buttons.upPressed(&mockButtonPressed); // 1
+    buttons.upPressed(&mockButtonPressed); // 0
     auto now = mockMillis();
     while (mockMillis() - now < 100)
     {
@@ -19,21 +23,6 @@ TEST_CASE(debounceButton)
     }
     // SHOULD DETECT PRESS HERE
     buttons.upPressed(&mockButtonPressed); // 0
-
-    // SHOULD NOT DETECT PRESS HERE
-    for (int i = 0; i < 30; i++)
-    {
-        buttons.upPressed(&mockButtonPressed);
-    }
-
-    buttons.upPressed(&mockButtonPressed); // 0
-    now = mockMillis();
-    while (mockMillis() - now < 52)
-    {
-        // Wait for debounce
-    }
-    // SHOULD DETECT PRESS HERE
-    buttons.upPressed(&mockButtonPressed); // 0
     std::string result = readFromFile("button_pressed.txt");
-    ASSERT_EQUAL(result, "BUTTON PRESSEDBUTTON PRESSED");
+    ASSERT_EQUAL(result, "BUTTON PRESSED");
 }

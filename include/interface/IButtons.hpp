@@ -11,6 +11,9 @@
 
 #include "Types.hpp"
 
+// Pointer to callback function
+typedef void (*Btcb)(void);
+
 /**
  * @brief Abstract class for buttons
  *
@@ -19,52 +22,94 @@ class IButtons
 {
   public:
     /**
-     * @brief Check if the up button is pressed and execute the callback
-     * function
+     * @brief Handle up button press events
      *
-     * @param callback Callback function to be executed
+     * @param press_cb Button press callback function
+     * @param release_cb Button release callback function
+     * @param short_press_cb Short press callback function
+     * @param long_press_cb Long press (>= 3s) callback function
+     * @param held_cb Button held callback function
      */
-    virtual void upPressed(void (*callback)()) = 0;
+    virtual void handleUpButton(Btcb press_cb = nullptr,
+                                Btcb release_cb = nullptr,
+                                Btcb short_press_cb = nullptr,
+                                Btcb long_press_cb = nullptr,
+                                Btcb held_cb = nullptr) = 0;
 
     /**
-     * @brief Check if the down button is pressed and execute the callback
-     * function
+     * @brief Handle down button press events
      *
-     * @param callback Callback function to be executed
+     * @param press_cb Button press callback function
+     * @param release_cb Button release callback function
+     * @param short_press_cb Short press callback function
+     * @param long_press_cb Long press (>= 3s) callback function
+     * @param held_cb Button held callback function
      */
-    virtual void downPressed(void (*callback)()) = 0;
+    virtual void handleDownButton(Btcb press_cb = nullptr,
+                                  Btcb release_cb = nullptr,
+                                  Btcb short_press_cb = nullptr,
+                                  Btcb long_press_cb = nullptr,
+                                  Btcb held_cb = nullptr) = 0;
 
     /**
-     * @brief Check if the memory button is pressed and execute the callback
-     * function
+     * @brief Handle memory button press events
      *
-     * @param callback Callback function to be executed
+     * @param press_cb Button press callback function
+     * @param release_cb Button release callback function
+     * @param short_press_cb Short press callback function
+     * @param long_press_cb Long press (>= 3s) callback function
+     * @param held_cb Button held callback function
      */
-    virtual void memPressed(void (*callback)()) = 0;
+    virtual void handleMemButton(Btcb press_cb = nullptr,
+                                 Btcb release_cb = nullptr,
+                                 Btcb short_press_cb = nullptr,
+                                 Btcb long_press_cb = nullptr,
+                                 Btcb held_cb = nullptr) = 0;
 
     /**
-     * @brief Check if the button 1 is pressed and execute the callback
-     * function
+     * @brief Handle button 1 press events
      *
-     * @param callback Callback function to be executed
+     * @param press_cb Button press callback function
+     * @param release_cb Button release callback function
+     * @param short_press_cb Short press callback function
+     * @param long_press_cb Long press (>= 3s) callback function
+     * @param held_cb Button held callback function
      */
-    virtual void bt1Pressed(void (*callback)()) = 0;
+    virtual void handleButton1(Btcb press_cb = nullptr,
+                               Btcb release_cb = nullptr,
+                               Btcb short_press_cb = nullptr,
+                               Btcb long_press_cb = nullptr,
+                               Btcb held_cb = nullptr) = 0;
 
     /**
-     * @brief Check if the button 2 is pressed and execute the callback
-     * function
+     * @brief Handle button 2 press events
      *
-     * @param callback Callback function to be executed
+     * @param press_cb Button press callback function
+     * @param release_cb Button release callback function
+     * @param short_press_cb Short press callback function
+     * @param long_press_cb Long press (>= 3s) callback function
+     * @param held_cb Button held callback function
      */
-    virtual void bt2Pressed(void (*callback)()) = 0;
+    virtual void handleButton2(Btcb press_cb = nullptr,
+                               Btcb release_cb = nullptr,
+                               Btcb short_press_cb = nullptr,
+                               Btcb long_press_cb = nullptr,
+                               Btcb held_cb = nullptr) = 0;
 
     /**
-     * @brief Check if the button 3 is pressed and execute the callback
-     * function
+     * @brief Handle button 3 press events
      *
-     * @param callback Callback function to be executed
+     * @param press_cb Button press callback function
+     * @param release_cb Button release callback function
+     * @param short_press_cb Short press callback function
+     * @param long_press_cb Long press (>= 3s) callback function
+     * @param held_cb Button held callback function
      */
-    virtual void bt3Pressed(void (*callback)()) = 0;
+    virtual void handleButton3(Btcb press_cb = nullptr,
+                               Btcb release_cb = nullptr,
+                               Btcb short_press_cb = nullptr,
+                               Btcb long_press_cb = nullptr,
+                               Btcb held_cb = nullptr) = 0;
 
     virtual ~IButtons() {}
 };
