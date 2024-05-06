@@ -19,6 +19,16 @@ void Desk::handleButtonEvent(ButtonIndex button, Btcb press_cb, Btcb release_cb,
                                 long_press_cb, held_cb);
 }
 
+void Desk::handleButtonEvent(ButtonIndex button, BtcbParamInt press_cb,
+                             BtcbParamInt release_cb,
+                             BtcbParamInt short_press_cb,
+                             BtcbParamInt long_press_cb, BtcbParamInt held_cb,
+                             int param)
+{
+    m_buttons.handleButtonEvent(button, press_cb, release_cb, short_press_cb,
+                                long_press_cb, held_cb, param);
+}
+
 void Desk::rotateMotor(uint8_t pin, int value, int direction)
 {
     m_controller.rotateMotor(pin, value, direction);

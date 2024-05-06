@@ -43,7 +43,7 @@ class TactileButtons final : public IButtons
     ~TactileButtons();
 
     /**
-     * @brief Handle up button press events
+     * @brief Handle button press events
      *
      * @param button Button index
      * @param press_cb Button press callback function
@@ -57,6 +57,25 @@ class TactileButtons final : public IButtons
                            Btcb short_press_cb = nullptr,
                            Btcb long_press_cb = nullptr,
                            Btcb held_cb = nullptr) override;
+
+    /**
+     * @brief Handle button press events with a callback that receives an
+     * integer parameter
+     *
+     * @param button Button index
+     * @param press_cb Button press callback function
+     * @param release_cb Button release callback function
+     * @param short_press_cb Short press callback function
+     * @param long_press_cb Long press (>= 3s) callback function
+     * @param held_cb Button held callback function
+     * @param param Parameter to be passed to the callback function
+     */
+    void handleButtonEvent(ButtonIndex button, BtcbParamInt press_cb = nullptr,
+                           BtcbParamInt release_cb = nullptr,
+                           BtcbParamInt short_press_cb = nullptr,
+                           BtcbParamInt long_press_cb = nullptr,
+                           BtcbParamInt held_cb = nullptr,
+                           int param = 0) override;
 
     /**
      * @brief Debounce a button and trigger a callback function based
@@ -73,6 +92,25 @@ class TactileButtons final : public IButtons
     void debounceAndTrigger(uint8_t bt_idx, bool active_state, Btcb press_cb,
                             Btcb release_cb, Btcb short_press_cb,
                             Btcb long_press_cb, Btcb held_cb);
+
+    /**
+     * @brief Debounce a button and trigger a callback function based
+     * on the detected event with an integer parameter
+     *
+     * @param bt_idx Button index (0 to 5)
+     * @param active_state Active state of the button (0 or 1)
+     * @param press_cb Button press callback function
+     * @param release_cb Button release callback function
+     * @param short_press_cb Short press callback function
+     * @param long_press_cb Long press (>= 3s) callback function
+     * @param held_cb Button held callback function
+     * @param param Parameter to be passed to the callback function
+     */
+    void debounceAndTrigger(uint8_t bt_idx, bool active_state,
+                            BtcbParamInt press_cb, BtcbParamInt release_cb,
+                            BtcbParamInt short_press_cb,
+                            BtcbParamInt long_press_cb, BtcbParamInt held_cb,
+                            int param);
 
   private:
     uint8_t m_button_pins[6];              // Button pins

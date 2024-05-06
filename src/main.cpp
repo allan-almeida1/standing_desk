@@ -71,6 +71,7 @@ void setup()
 
     // ************ DEBUG ONLY ************
     Serial.begin(9600);
+    // ************************************
 }
 
 void buttonPressed() { Serial.println("BUTTON PRESSED"); }
@@ -83,11 +84,13 @@ void buttonLongPressed() { Serial.println("BUTTON LONG PRESSED"); }
 
 void buttonHeld() { Serial.println("BUTTON HELD"); }
 
+void methodWithParam(int param) { Serial.println(String(param)); }
+
 void loop()
 {
 
     desk.handleButtonEvent(ButtonIndex::BUTTON2, nullptr, nullptr,
-                           &buttonShortPressed, &buttonLongPressed);
+                           &methodWithParam, nullptr, nullptr, 6);
 
     desk.handleButtonEvent(ButtonIndex::BUTTON3, nullptr, nullptr,
                            &buttonShortPressed, &buttonLongPressed);

@@ -33,6 +33,10 @@ class Desk
      */
     Desk(IController &controller, IDisplay &display, IButtons &buttons,
          IEncoder &left_encoder, IEncoder &right_encoder);
+
+    /**
+     * @brief Destroy the Desk object
+     */
     ~Desk();
 
     /**
@@ -57,6 +61,24 @@ class Desk
                            Btcb short_press_cb = nullptr,
                            Btcb long_press_cb = nullptr,
                            Btcb held_cb = nullptr);
+
+    /**
+     * @brief Handle button press events with a callback that receives an
+     * integer parameter
+     *
+     * @param button Button index
+     * @param press_cb Button press callback function
+     * @param release_cb Button release callback function
+     * @param short_press_cb Short press callback function
+     * @param long_press_cb Long press (>= 3s) callback function
+     * @param held_cb Button held callback function
+     * @param param Parameter to be passed to the callback function
+     */
+    void handleButtonEvent(ButtonIndex button, BtcbParamInt press_cb = nullptr,
+                           BtcbParamInt release_cb = nullptr,
+                           BtcbParamInt short_press_cb = nullptr,
+                           BtcbParamInt long_press_cb = nullptr,
+                           BtcbParamInt held_cb = nullptr, int param = 0);
 
     /**
      * @brief Rotate the motor in a specific direction at a specific speed
