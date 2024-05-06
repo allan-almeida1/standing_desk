@@ -10,6 +10,7 @@
 #define DISPLAY_HPP
 
 #include "interface/IDisplay.hpp"
+#include <Arduino.h>
 
 /**
  * @brief 7-Segment Display class
@@ -18,8 +19,7 @@ class Display7Seg final : public IDisplay
 {
   public:
     Display7Seg(uint8_t data_pin, uint8_t shift_clk_pin, uint8_t latch_clk_pin,
-                uint8_t en_disp1_pin,
-                void (*digital_write_func)(uint8_t, uint8_t));
+                uint8_t en_disp1_pin);
     ~Display7Seg();
 
     /**
@@ -34,8 +34,6 @@ class Display7Seg final : public IDisplay
     uint8_t m_shitf_clk_pin; // Shift clock pin
     uint8_t m_latch_clk_pin; // Latch clock pin
     uint8_t m_en_disp1_pin;  // Enable Display 1 pin
-    void (*m_digital_write_func)(uint8_t,
-                                 uint8_t); // Digital digitalWrite function
 };
 
 /**

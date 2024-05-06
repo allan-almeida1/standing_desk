@@ -10,6 +10,7 @@
 #define TACTILEBUTTONS_HPP
 
 #include "interface/IButtons.hpp"
+#include <Arduino.h>
 
 #define DEBOUNCE_DELAY 17    // Debounce delay in milliseconds
 #define LONG_PRESS_TIME 3000 // Long press time in milliseconds
@@ -36,97 +37,26 @@ class TactileButtons final : public IButtons
      * @param bt1_pin Button 1 pin
      * @param bt2_pin Button 2 pin
      * @param bt3_pin Button 3 pin
-     * @param digital_read_func Pointer to the digitalRead function
      */
     TactileButtons(uint8_t bt_up_pin, uint8_t bt_down_pin, uint8_t bt_mem_pin,
-                   uint8_t bt1_pin, uint8_t bt2_pin, uint8_t bt3_pin,
-                   int (*digital_read_func)(uint8_t),
-                   unsigned long (*millis_func)(void));
+                   uint8_t bt1_pin, uint8_t bt2_pin, uint8_t bt3_pin);
     ~TactileButtons();
 
     /**
      * @brief Handle up button press events
      *
+     * @param button Button index
      * @param press_cb Button press callback function
      * @param release_cb Button release callback function
      * @param short_press_cb Short press callback function
      * @param long_press_cb Long press (>= 3s) callback function
      * @param held_cb Button held callback function
      */
-    void handleUpButton(Btcb press_cb = nullptr, Btcb release_cb = nullptr,
-                        Btcb short_press_cb = nullptr,
-                        Btcb long_press_cb = nullptr,
-                        Btcb held_cb = nullptr) override;
-
-    /**
-     * @brief Handle down button press events
-     *
-     * @param press_cb Button press callback function
-     * @param release_cb Button release callback function
-     * @param short_press_cb Short press callback function
-     * @param long_press_cb Long press (>= 3s) callback function
-     * @param held_cb Button held callback function
-     */
-    void handleDownButton(Btcb press_cb = nullptr, Btcb release_cb = nullptr,
-                          Btcb short_press_cb = nullptr,
-                          Btcb long_press_cb = nullptr,
-                          Btcb held_cb = nullptr) override;
-
-    /**
-     * @brief Handle memory button press events
-     *
-     * @param press_cb Button press callback function
-     * @param release_cb Button release callback function
-     * @param short_press_cb Short press callback function
-     * @param long_press_cb Long press (>= 3s) callback function
-     * @param held_cb Button held callback function
-     */
-    void handleMemButton(Btcb press_cb = nullptr, Btcb release_cb = nullptr,
-                         Btcb short_press_cb = nullptr,
-                         Btcb long_press_cb = nullptr,
-                         Btcb held_cb = nullptr) override;
-
-    /**
-     * @brief Handle button 1 press events
-     *
-     * @param press_cb Button press callback function
-     * @param release_cb Button release callback function
-     * @param short_press_cb Short press callback function
-     * @param long_press_cb Long press (>= 3s) callback function
-     * @param held_cb Button held callback function
-     */
-    void handleButton1(Btcb press_cb = nullptr, Btcb release_cb = nullptr,
-                       Btcb short_press_cb = nullptr,
-                       Btcb long_press_cb = nullptr,
-                       Btcb held_cb = nullptr) override;
-
-    /**
-     * @brief Handle button 2 press events
-     *
-     * @param press_cb Button press callback function
-     * @param release_cb Button release callback function
-     * @param short_press_cb Short press callback function
-     * @param long_press_cb Long press (>= 3s) callback function
-     * @param held_cb Button held callback function
-     */
-    void handleButton2(Btcb press_cb = nullptr, Btcb release_cb = nullptr,
-                       Btcb short_press_cb = nullptr,
-                       Btcb long_press_cb = nullptr,
-                       Btcb held_cb = nullptr) override;
-
-    /**
-     * @brief Handle button 3 press events
-     *
-     * @param press_cb Button press callback function
-     * @param release_cb Button release callback function
-     * @param short_press_cb Short press callback function
-     * @param long_press_cb Long press (>= 3s) callback function
-     * @param held_cb Button held callback function
-     */
-    void handleButton3(Btcb press_cb = nullptr, Btcb release_cb = nullptr,
-                       Btcb short_press_cb = nullptr,
-                       Btcb long_press_cb = nullptr,
-                       Btcb held_cb = nullptr) override;
+    void handleButtonEvent(ButtonIndex button, Btcb press_cb = nullptr,
+                           Btcb release_cb = nullptr,
+                           Btcb short_press_cb = nullptr,
+                           Btcb long_press_cb = nullptr,
+                           Btcb held_cb = nullptr) override;
 
     /**
      * @brief Debounce a button and trigger a callback function based
@@ -145,16 +75,9 @@ class TactileButtons final : public IButtons
                             Btcb long_press_cb, Btcb held_cb);
 
   private:
-    uint8_t m_bt_up_pin;                  // Button up pin
-    uint8_t m_bt_down_pin;                // Button down pin
-    uint8_t m_bt_mem_pin;                 // Button memory pin
-    uint8_t m_bt1_pin;                    // Button 1 pin
-    uint8_t m_bt2_pin;                    // Button 2 pin
-    uint8_t m_bt3_pin;                    // Button 3 pin
-    int (*m_digital_read_func)(uint8_t);  // Pointer to the digitalRead function
-    unsigned long (*m_millis_func)(void); // Pointer to the millis function
-    bool m_button_state[6];               // Button state
-    bool m_last_button_state[6];          // Last button state
+    uint8_t m_button_pins[6];              // Button pins
+    bool m_button_state[6];                // Button state
+    bool m_last_button_state[6];           // Last button state
     unsigned long m_last_debounce_time[6]; // Last debounce time
     unsigned long m_press_time[6];         // Press time
     bool m_button_active[6];     // Button is active (0) or inactive (1)
