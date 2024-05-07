@@ -11,6 +11,9 @@
 
 #include "Types.hpp"
 #include "interface/IEncoder.hpp"
+#include <Arduino.h>
+
+#define MAX_ENCODER_TIMEOUT 300 // Maximum time between encoder reads (ms)
 
 /**
  * @brief Class for motor encoder
@@ -39,16 +42,20 @@ class MotorEncoder final : public IEncoder
 
     /**
      * @brief Interrupt received on encoder pin
-     *
-     * @param current_time Current time in milliseconds
      */
-    void interrupt(unsigned long current_time);
+    void interrupt();
+
+    /**
+     * @brief Check time since last encoder read and set speed to 0 if time
+     * exceeds maximum time
+     */
+    void checkEncoderTimeout() override;
 
   private:
-    uint8_t m_pin;                     // Encoder pin
-    uint16_t m_encoderResolution;      // Encoder resolution
-    volatile float m_speed;            // Speed value in RPM
-    volatile unsigned long m_lastTime; // Last time the encoder was read
+    uint8_t m_pin;                      // Encoder pin
+    uint16_t m_encoder_resolution;      // Encoder resolution
+    volatile float m_speed;             // Speed value in RPM
+    volatile unsigned long m_last_time; // Last time the encoder was read
 };
 
 #endif // MOTOR_ENCODER_HPP

@@ -97,6 +97,26 @@ class Desk
      */
     void stopMotor(uint8_t pin);
 
+    /**
+     * @brief Get the left encoder speed
+     *
+     * @return float The left encoder speed
+     */
+    float getLeftEncoderSpeed();
+
+    /**
+     * @brief Get the right encoder speed
+     *
+     * @return float The right encoder speed
+     */
+    float getRightEncoderSpeed();
+
+    /**
+     * @brief Check time since last encoder reading and set the speed
+     * to zero if it is too long
+     */
+    void checkEncoderTimeout();
+
   private:
     IController &m_controller; // Controller object
     IDisplay &m_display;       // Display object

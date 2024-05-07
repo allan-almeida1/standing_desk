@@ -35,3 +35,13 @@ void Desk::rotateMotor(uint8_t pin, int value, int direction)
 }
 
 void Desk::stopMotor(uint8_t pin) { m_controller.stopMotor(pin); }
+
+float Desk::getLeftEncoderSpeed() { return m_left_encoder.getSpeed(); }
+
+float Desk::getRightEncoderSpeed() { return m_right_encoder.getSpeed(); }
+
+void Desk::checkEncoderTimeout()
+{
+    m_left_encoder.checkEncoderTimeout();
+    m_right_encoder.checkEncoderTimeout();
+}

@@ -5,6 +5,10 @@
 #include "TactileButtons.hpp"
 #include <Arduino.h>
 
+#define ADJUST_MOTOR_POSITION
+// #define DEBUG_ENCODER
+// unsigned long last_time = 0;
+
 // ================== PIN DEFINITIONS ==================
 #define DATA_PIN 6
 #define SHIFT_PIN 7
@@ -38,9 +42,9 @@ Desk desk(controller, display, buttons, left_encoder, right_encoder);
 
 // ================== CALLBACK FUNCTIONS ==================
 
-void updateLeftEncoder() { left_encoder.interrupt(millis()); }
+void updateLeftEncoder() { left_encoder.interrupt(); }
 
-void updateRightEncoder() { right_encoder.interrupt(millis()); }
+void updateRightEncoder() { right_encoder.interrupt(); }
 
 bool enable = 0;
 
@@ -74,24 +78,60 @@ void setup()
     // ************************************
 }
 
-void buttonPressed() { Serial.println("BUTTON PRESSED"); }
+void moveUp()
+{
+    Serial.println("Moving up");
+    desk.rotateMotor(PWM_LEFT, 400, 0);
+    desk.rotateMotor(PWM_RIGHT, 400, 0);
+}
 
-void buttonReleased() { Serial.println("BUTTON RELEASED"); }
+void moveDown()
+{
+    Serial.println("Moving down");
+    desk.rotateMotor(PWM_LEFT, 400, 1);
+    desk.rotateMotor(PWM_RIGHT, 400, 1);
+}
 
-void buttonShortPressed() { Serial.println("BUTTON SHORT PRESSED"); }
-
-void buttonLongPressed() { Serial.println("BUTTON LONG PRESSED"); }
-
-void buttonHeld() { Serial.println("BUTTON HELD"); }
-
-void methodWithParam(int param) { Serial.println(String(param)); }
+void stopMotors()
+{
+    Serial.println("Stopping motors");
+    desk.stopMotor(PWM_LEFT);
+    desk.stopMotor(PWM_RIGHT);
+}
 
 void loop()
 {
 
-    desk.handleButtonEvent(ButtonIndex::BUTTON2, nullptr, nullptr,
-                           &methodWithParam, nullptr, nullptr, 6);
+#ifdef DEBUG_MOTOR
+    for (int i = 0; i < 640; i += 10)
+    {
+        desk.rotateMotor(PWM_LEFT, i, 0);
+        desk.rotateMotor(PWM_RIGHT, i, 0);
+        delay(1);
+    }
+    delay(3000);
+    for (int i = 639; i >= 0; i -= 10)
+    {
+        desk.rotateMotor(PWM_LEFT, i, 0);
+        desk.rotateMotor(PWM_RIGHT, i, 0);
+        delay(1);
+    }
+#endif
 
-    desk.handleButtonEvent(ButtonIndex::BUTTON3, nullptr, nullptr,
-                           &buttonShortPressed, &buttonLongPressed);
+#ifdef ADJUST_MOTOR_POSITION
+    desk.handleButtonEvent(ButtonIndex::BUTTON3, &moveUp, &stopMotors, nullptr,
+                           nullptr, nullptr);
+    desk.handleButtonEvent(ButtonIndex::BUTTON2, &moveDown, &stopMotors,
+                           nullptr, nullptr, nullptr);
+
+#ifdef DEBUG_ENCODER
+    desk.checkEncoderTimeout();
+    if (millis() - last_time > 1000)
+    {
+        Serial.println("Left encoder: " + String(desk.getLeftEncoderSpeed()));
+        Serial.println("Right encoder: " + String(desk.getRightEncoderSpeed()));
+        last_time = millis();
+    }
+#endif
+#endif
 }
